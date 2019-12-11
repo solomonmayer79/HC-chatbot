@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <link rel="stylesheet" href="/static/login.css" type="text/css">
+        <title>Login</title>
+    </head>
+    <body>
+        <form action="/login" method="POST">
+            <div class="login">
+                <div class="login-screen">
+                    <div class="app-title">
+                        <h1>Login</h1>
+                    </div>
+                    
+                    <div class="login-form">
+                        <div class="control-group">
+                            <input type="text" id="name-login" class="login-field" value="" placeholder="username" name="username">
+                            <label class="login-field-icon fui-user" for="login-name"></label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <input type="password" id="pass-login" class="login-field" value="" placeholder="password" name="password">
+                            <label class="login-field-icon fui-lock" for="login-pass"></label>
+                        </div>
+                        <input type="submit" id="log_in" value="login" class="btn btn-primary btn-large btn-block" onclick="validateLogForm()">
+                        <input type="submit" id="reg_form" value="register" class="reg" onclick="validateNewForm()">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+
+    <script type="text/javascript">
+        function validateLogForm() {
+            document.getElementById("name-login").required = true;
+            document.getElementById("pass-login").required = true;
+        }
+
+        function validateNewForm() {
+            document.getElementById("name-login").required = false;
+            document.getElementById("pass-login").required = false;
+        }
+    </script>
+</html>     

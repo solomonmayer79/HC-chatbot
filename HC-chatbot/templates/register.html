@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/register.css" type="text/css">
+        <title>Register</title>
+    </head>
+<body>
+    <form action="/register" method="POST">
+        <div class="register">
+            <div class="register-screen">
+                <div class="app-title">
+                    <h1>Register</h1>
+                </div>
+                
+                <div class="register-form">
+                    
+                    <div class="control-group">
+                        <label class="register-field-icon fui-user" for="register-name">Username: </label>
+                        <input type="text" class="register-field" value="" placeholder="username" name="username" required>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="register-field-icon fui-user" for="register-name">Password: </label>
+                        <input type="password" class="register-field" value="" placeholder="password" name="password" required>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="register-field-icon fui-user" for="register-name">Email: </label>
+                        <input type="email" class="register-field" value="" placeholder="email" name="email" required>
+                    </div>
+                    
+                    <input type="submit" value="Register" class="btn btn-primary btn-large btn-block">
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
