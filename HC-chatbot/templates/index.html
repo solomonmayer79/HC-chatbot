@@ -6,8 +6,9 @@
   <body>
     <h1>HealthCare ChatBot</h1>
     <div>
-      <div id="chatbox">
-        <p class="botText"><span>Hi {{username}}!</span></p>
+      <div id="chatbox"><span id="uid">{{uid}}</span>
+        <p class="botText"><span>Hi<span id="uname"> {{username}}</span>>!<br> How can I help you?</span></p>
+
       </div>
       <div id="userInput">
         <input id="textInput" type="text" name="msg" placeholder="Message">
@@ -16,12 +17,14 @@
       <script>
         function getBotResponse() {
           var rawText = $("#textInput").val();
-          var userHtml = '<p class="userText"><span> {{username}} : ' + rawText + '</span></p>';
+          var uid =  $("#uid").text();
+          console.log(uname)
+          var userHtml = '<p class="userText"><span><b> {{username}} : </b>' + rawText + '</span></p>';
           $("#textInput").val("");
           $("#chatbox").append(userHtml);
           document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-          $.get("/get", { msg: rawText }).done(function(data) {
-            var botHtml = '<p class="botText"><span> Aihcc : ' + data + '</span></p>';
+          $.get("/get", { msg: rawText, userID : uid }).done(function(data) {
+            var botHtml = '<p class="botText"><span><b> Aihcc : </b>' + data + '</span></p>';
             $("#chatbox").append(botHtml);
             document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
           });
