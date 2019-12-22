@@ -35,8 +35,6 @@ file= open('saved_conversations/'+str(filenumber),"w+")
 file.write('bot : Hi There! I am a Healthcare chatbot. You can begin conversation by typing in a message and pressing enter.\n')
 file.close()
 
-
-
 app = Flask(__name__)
 
 Flask(__name__, template_folder="templates")
@@ -54,8 +52,6 @@ english_bot.set_trainer(ListTrainer)
 english_bot.train("./data")
 
 #save the conversation to database
-
-
 # create table
 
 #create_Query = '''CREATE TABLE conversation(
@@ -66,10 +62,6 @@ english_bot.train("./data")
 
 #cursor.execute(create_Query)
 #connection.commit()
-
-#@app.route("/")
-#def home():
-#    return render_template("index.html")
 
 @app.route('/')
 def home():
@@ -83,14 +75,6 @@ def home():
         cursor.execute(get_userID, (username_db,))
         userID_record= cursor.fetchone()
         userID = userID_record[0]
-        today_db = datetime.now()
-
-        message_db = 'bot : Hi '+username_db+'! I am a Healthcare chatbot. You can begin conversation by typing in a message and pressing enter.'
-        
-        insert_query = """ INSERT INTO conversation (user_id, message, start_on) VALUES (%s,%s,%s)"""
-        record_to_insert = (userID, message_db, today_db)
-        cursor.execute(insert_query, record_to_insert)
-        connection.commit()
         return render_template("index.html", username = username_db, uid = userID)
 
 @app.route("/new-user")
@@ -106,7 +90,6 @@ def register():
         address = request.form['address']
 
         # insert value in user account table
-        
 
         insert_query = """ INSERT INTO user_account (username, password, email, created_on, last_login, address) VALUES (%s,%s,%s,%s,%s,%s)"""
         record_to_insert = (username, password, email, today, today, address)
@@ -138,6 +121,7 @@ def do_admin_login():
     else:
         session['logged_in'] = True
         return home()  
+
 @app.route("/get")
 def get_bot_response():
     
@@ -145,23 +129,9 @@ def get_bot_response():
     response = str(english_bot.get_response(userText))
 
     #save conversation in database
-    #username = request.args.get('uname')
-    #print(username)
-    #username_home = request.form['username']
-    #uname = request.args.get('username_db')
-    #get_userID = "select * from user_account WHERE username = %s"
-    #cursor.execute(get_userID, (username,))
-    #userID_record= cursor.fetchone()
     userID = request.args.get('userID') 
-    #print(userID)
-    #cursor.close()
-    #userID = userID_record[0]
     message = 'user : '+userText+'\n'+'bot : '+response+'\n'
-
-    #update_query = """Update conversation set message = %s where user_id = %s"""
-    #cursor.execute(update_query, (message, userID))
-    #connection.commit()
-    
+    today_db = datetime.now()
     
     appendfile=os.listdir('saved_conversations')[-1]
     appendfile= open('saved_conversations/'+str(filenumber),"a")
@@ -169,14 +139,11 @@ def get_bot_response():
     appendfile.write('bot : '+response+'\n')
     appendfile.close()
     
-    print(message)
-    insert_query = """ INSERT INTO conversation ( message ) WHERE user_id = %s VALUES (%s)"""
-    record_to_insert = ( userID, message )
+    insert_query = """ INSERT INTO conversation (user_id, message, start_on) VALUES (%s,%s,%s)"""
+    record_to_insert = (userID, message, today_db)
     cursor.execute(insert_query, record_to_insert)
     connection.commit()
-
     return response
-
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
