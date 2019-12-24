@@ -2,7 +2,7 @@ from flask import Flask, flash, redirect, render_template, request, session, abo
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 import os
-
+import call
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 
@@ -51,7 +51,6 @@ trainer='chatterbot.trainers.ListTrainer')
 english_bot.set_trainer(ListTrainer)
 english_bot.train("./data")
 
-#save the conversation to database
 # create table
 
 #create_Query = '''CREATE TABLE conversation(
@@ -90,7 +89,6 @@ def register():
         address = request.form['address']
 
         # insert value in user account table
-
         insert_query = """ INSERT INTO user_account (username, password, email, created_on, last_login, address) VALUES (%s,%s,%s,%s,%s,%s)"""
         record_to_insert = (username, password, email, today, today, address)
         cursor.execute(insert_query, record_to_insert)
@@ -128,7 +126,7 @@ def get_bot_response():
     userText = request.args.get('msg')
     response = str(english_bot.get_response(userText))
 
-    #save conversation in database
+    # save conversation in database
     userID = request.args.get('userID') 
     message = 'user : '+userText+'\n'+'bot : '+response+'\n'
     today_db = datetime.now()
@@ -143,7 +141,13 @@ def get_bot_response():
     record_to_insert = (userID, message, today_db)
     cursor.execute(insert_query, record_to_insert)
     connection.commit()
+    
+    # emergency call system
+    if userText == 'emergency':
+        os.system('python call.py')
+    
     return response
+
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)
